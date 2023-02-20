@@ -3,7 +3,7 @@ const scoreDisplay = document.getElementById('score');
 
 const jeopardyCategories = [
     {
-        genere: "WHO",
+        genre: "WHO",
         questions: [
             {
                 question: "Who wrote Harry Potter books?",
@@ -26,7 +26,7 @@ const jeopardyCategories = [
         ],
     },
     {
-        genere: "WHERE",
+        genre: "WHERE",
         questions: [
             {
                 question: "Where is Buckingham Place",
@@ -49,7 +49,7 @@ const jeopardyCategories = [
         ],
     },
     {
-        genere: "WHEN",
+        genre: "WHEN",
         questions: [
             {
                 question: "When is Christmas",
@@ -72,7 +72,7 @@ const jeopardyCategories = [
         ],
     },
     {
-        genere: "WHAT",
+        genre: "WHAT",
         questions: [
             {
                 question: "What is the capital of Saudi Arabia?",
@@ -95,7 +95,7 @@ const jeopardyCategories = [
         ],
     },
     {
-        genere: "HOW MANY",
+        genre: "HOW MANY",
         questions: [
             {
                 question: "How many players in a football team?",
@@ -116,7 +116,7 @@ const jeopardyCategories = [
                 level: "hard"
             },
         ],
-    },
+    }
 ]
 
 function addCategory(category) {
@@ -125,11 +125,32 @@ function addCategory(category) {
 
     const genreTitle = document.createElement('div');
     genreTitle.classList.add('genre-title');
-    genreTitle.innerHTML = category.genre;
+    genreTitle.textContent = category.genre;
 
-    column.appendChild('genreTitle');
-    game.append(column);
+    column.appendChild(genreTitle);
+    game.append(column)
+
+    category.questions.forEach(question => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        column.appendChild(card);
+
+        if (question.level === 'easy') {
+            card.textContent = 100;
+        }
+        if (question.level === 'medium') {
+            card.textContent = 200;
+        }
+        if (question.level === 'hard') {
+            card.textContent = 300;
+        }
+
+        card.setAttribute('data-question', question.question);
+        card.setAttribute('data-answer-1', question.answers[0]);
+        card.setAttribute('data-answer-2', question.answers[1]);
+        card.setAttribute('data-correct', question.correct);
+        card.setAttribute('data-value', card.getInnerHTML());
+    })
 }
 
 jeopardyCategories.forEach(category => addCategory(category));
-
