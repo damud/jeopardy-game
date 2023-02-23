@@ -119,6 +119,8 @@ const jeopardyCategories = [
     }
 ]
 
+let score = 0;
+
 function addCategory(category) {
     const column = document.createElement('div');
     column.classList.add('genre-column');
@@ -169,7 +171,39 @@ function flipCard() {
     firstButton.classList.add('first-button');
     secondButton.classList.add('second-button');
     firstButton.innerHTML = this.getAttribute('data-answer-1');
+    firstButton.addEventListener('click', getResult);
+    secondButton.addEventListener('click', getResult);
     secondButton.innerHTML = this.getAttribute('data-answer-2');
     this.append(textDisplay, firstButton, secondButton);
 
-}
+    // Prevent fliping other cards when open one
+
+    const allCards = Array.from(document.querySelectorAll('.card')) 
+    allCards.forEach(card => card.removeEventListener('click', flipCard));
+    }
+
+    function getResult() {
+        const cardofButton = this.parentElement;
+        const allCards = Array.from(document.querySelectorAll('.card'));
+        allCards.forEach(card => card.addEventListener('click', flipCard));
+         if (cardofButton.getAttribute('data-correct') == this.innerHTML) {
+            score = score + parseInt(cardofButton.getAttribute('data-value'));
+            scoreDisplay.innerHTML = score;
+            cardofButton.classList.add('correct-answer');
+            setTimeout(() => {
+                while (cardofButton.firstChild) {
+                    cardofButton.removeChild(cardofButton.lastChild);
+                }
+                cardofButton.innerHTML = cardofButton.getAttribute('data-value');
+            }, 100)
+        } else {
+            cardofButton.classList.add('wrong-answer');
+            setTimeout(() => {
+                while (cardofButton.firstChild) {
+                    cardofButton.removeChild(cardofButton.lastChild);
+                }
+                cardofButton.innerHTML = 0;
+            }, 100)
+        }
+        cardofButton.removeEventListener('click', flipCard);
+    }
