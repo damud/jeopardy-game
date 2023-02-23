@@ -150,7 +150,26 @@ function addCategory(category) {
         card.setAttribute('data-answer-2', question.answers[1]);
         card.setAttribute('data-correct', question.correct);
         card.setAttribute('data-value', card.getInnerHTML());
+
+        card.addEventListener('click', flipCard);
     })
 }
 
 jeopardyCategories.forEach(category => addCategory(category));
+
+function flipCard() {
+    this.InnerHTML = "";
+    this.style.fontSize = "15px";
+    this.style.lineHeight = "30px";
+    const textDisplay = document.createElement('div');
+    textDisplay.classList.add('card-text');
+    textDisplay.innerHTML = this.getAttribute('data-question');
+    const firstButton = document.createElement('button');
+    const secondButton = document.createElement('button');
+    firstButton.classList.add('first-button');
+    secondButton.classList.add('second-button');
+    firstButton.innerHTML = this.getAttribute('data-answer-1');
+    secondButton.innerHTML = this.getAttribute('data-answer-2');
+    this.append(textDisplay, firstButton, secondButton);
+
+}
